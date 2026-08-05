@@ -1,16 +1,10 @@
 package com.senai.cantina.cantina.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 
 import java.util.Objects;
 
-@Entity
 public class ObservacaoPedido {
 
-    @Id
-    @GeneratedValue
     private Long idObservacaoPedido;
     private String observacaoUsuario;
 
@@ -32,11 +26,6 @@ public class ObservacaoPedido {
 
     public ObservacaoPedido(){
 
-    }
-
-    public ObservacaoPedido(String observacaoUsuario, Long idObservacaoPedido) {
-        this.observacaoUsuario = observacaoUsuario;
-        this.idObservacaoPedido = idObservacaoPedido;
     }
 
     @Override

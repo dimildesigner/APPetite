@@ -1,18 +1,11 @@
 package com.senai.cantina.cantina.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
-@Entity
 public class Reserva {
 
-    @Id
-    @GeneratedValue
     private Long idReserva;
     private LocalTime horarioReserva;
     private LocalDate dataReserva;

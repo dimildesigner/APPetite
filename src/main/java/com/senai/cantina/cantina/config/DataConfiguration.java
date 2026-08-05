@@ -14,7 +14,7 @@ import java.sql.*;
 public class DataConfiguration {
 
     private static final String URL =
-            "jdbc:mysql://localhost:3306/suporte"
+            "jdbc:mysql://localhost:3306/cantina"
                     + "?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=America/Sao_Paulo";
 
 
@@ -52,7 +52,9 @@ public class DataConfiguration {
     }
 
     public boolean bancoJaCriado() {
-        String[] tabelasEsperadas = {"solicitacoes", "tecnicos", "painelTecnico"};
+        String[] tabelasEsperadas = {"categoria", "comentario", "compra", "contato", "estoque", "formapagamento",
+                                    "fornecedor", "funcionario", "itemcompra", "itempedido", "login",
+                                    "observacaopedido", "pedido", "produto", "reserva", "usuario", "vendapagamento"};
         try (Connection conexao = DriverManager.getConnection(URL, USUARIO, SENHA)) {
             DatabaseMetaData metadados = conexao.getMetaData();
             for (String tabela : tabelasEsperadas) {

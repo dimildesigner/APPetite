@@ -1,17 +1,11 @@
 package com.senai.cantina.cantina.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity
 public class Comentario {
 
-    @Id
-    @GeneratedValue
     private Long idComentario;
     private LocalDateTime dataHoraComentario;
     private String comentarioUsuario;
@@ -51,13 +45,6 @@ public class Comentario {
 
     public Comentario(){
 
-    }
-
-    public Comentario(Long idComentario, LocalDateTime dataHoraComentario, String comentarioUsuario, int avaliacao) {
-        this.idComentario = idComentario;
-        this.dataHoraComentario = dataHoraComentario;
-        this.comentarioUsuario = comentarioUsuario;
-        this.avaliacao = avaliacao;
     }
 
     @Override

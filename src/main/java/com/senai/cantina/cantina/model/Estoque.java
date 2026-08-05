@@ -1,18 +1,12 @@
 package com.senai.cantina.cantina.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity
 public class Estoque {
-    @Id
-    @GeneratedValue
     private Long idEstoque;
-    private Enum tipoEstoque;
+    private String tipoEstoque;
     private String origem;
     private int quantidadeEstoque;
     private double saldoAnterior;
@@ -27,11 +21,11 @@ public class Estoque {
         this.idEstoque = idEstoque;
     }
 
-    public Enum getTipoEstoque() {
+    public String getTipoEstoque() {
         return tipoEstoque;
     }
 
-    public void setTipoEstoque(Enum tipoEstoque) {
+    public void setTipoEstoque(String tipoEstoque) {
         this.tipoEstoque = tipoEstoque;
     }
 
@@ -75,30 +69,38 @@ public class Estoque {
         this.dataMovimentacao = dataMovimentacao;
     }
 
-    public Estoque(){
+    public Estoque() {
 
     }
-    public Estoque(Long idEstoque, Enum tipo, String origem, int quantidade, double saldo_anterior, double saldo_atual, LocalDateTime data_movimentacao) {
-        this.idEstoque = idEstoque;
-        this.tipoEstoque = tipoEstoque;
-        this.origem = origem;
-        this.quantidadeEstoque = quantidadeEstoque;
-        this.saldoAnterior = saldo_anterior;
-        this.saldoAtual = saldo_atual;
-        this.dataMovimentacao = data_movimentacao;
-    }
+
     @Override
     public boolean equals(Object o) {
-        if(this == o)
+        if (this == o)
             return true;
-        if(o == null || getClass()!= o.getClass())
+        if (o == null || getClass() != o.getClass())
             return false;
         Estoque that = (Estoque) o;
-        return idEstoque!= null && idEstoque.equals(that.idEstoque);
+        return idEstoque != null && idEstoque.equals(that.idEstoque);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getClass());
+    }
+
+    public enum TipoEstoque {
+        PERECIVEL("Perecível"),
+        NAO_PERECIVEL("Não Perecível"),
+        OUTROS("Outros");
+
+        private final String categoriaEstoque;
+
+        TipoEstoque(String categoriaEstoque) {
+            this.categoriaEstoque = categoriaEstoque;
+        }
+
+        public String getCategoriaEstoque() {
+            return categoriaEstoque;
+        }
     }
 }

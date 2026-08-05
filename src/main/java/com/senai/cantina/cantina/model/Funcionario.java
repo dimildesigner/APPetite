@@ -1,19 +1,13 @@
 package com.senai.cantina.cantina.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 
 import java.util.Objects;
 
-@Entity
 public class Funcionario {
-    @Id
-    @GeneratedValue
     private Long idFuncionario;
     private String nomeFuncionario;
     private String cpf;
-    private Enum cargo;
+    private String cargo;
     private boolean funcionarioAtivo;
 
     public Long getIdFuncionario() {
@@ -48,27 +42,47 @@ public class Funcionario {
         this.funcionarioAtivo = funcionarioAtivo;
     }
 
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+
     public Funcionario() {
 
     }
 
-    public Funcionario(Long idFuncionario, String nomeFuncionario, String cpf, Enum cargo, boolean funcionarioAtivo) {
-        this.idFuncionario = idFuncionario;
-        this.nomeFuncionario = nomeFuncionario;
-        this.cpf = cpf;
-        this.cargo = cargo;
-        this.funcionarioAtivo = funcionarioAtivo;
-    }
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (o == null || getClass() != o.getClass())
+                return false;
+            Funcionario that = (Funcionario) o;
+            return idFuncionario != null && idFuncionario.equals(that.idFuncionario);
+        }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Funcionario that = (Funcionario) o;
-        return funcionarioAtivo == that.funcionarioAtivo && Objects.equals(idFuncionario, that.idFuncionario) && Objects.equals(nomeFuncionario, that.nomeFuncionario) && Objects.equals(cpf, that.cpf) && Objects.equals(cargo, that.cargo);
-    }
+        @Override
+        public int hashCode() {
+            return Objects.hash(getClass());
+        }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getClass());
+    public enum Cargo {
+        GERENTE("Gerente"),
+        BALCONISTA("Balconista"),
+        CHAPEIRO("Chapeiro");
+
+        private final String funcao;
+
+        Cargo(String funcao) {
+            this.funcao = funcao;
+        }
+
+        public String getFuncao() {
+            return funcao;
+        }
     }
 }
+

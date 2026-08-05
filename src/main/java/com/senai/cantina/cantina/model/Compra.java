@@ -1,17 +1,10 @@
 package com.senai.cantina.cantina.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-
 import java.time.LocalDate;
 import java.util.Objects;
 
-@Entity
 public class Compra {
 
-    @Id
-    @GeneratedValue
     private Long idCompra;
     private LocalDate dataCompra;
     private double valorTotalCompra;
@@ -51,13 +44,6 @@ public class Compra {
 
     public Compra(){
 
-    }
-
-    public Compra(Long idCompra, LocalDate dataCompra, double valorTotalCompra, String observacao) {
-        this.idCompra = idCompra;
-        this.dataCompra = dataCompra;
-        this.valorTotalCompra = valorTotalCompra;
-        this.observacao = observacao;
     }
 
     @Override

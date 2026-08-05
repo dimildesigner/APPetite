@@ -1,18 +1,12 @@
 package com.senai.cantina.cantina.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 
 import java.util.Objects;
 
-@Entity
 public class FormaPagamento {
 
-    @Id
-    @GeneratedValue
     private Long idFormaPagamento;
-    private Enum tipoFormaPagamento;
+    private String tipoFormaPagamento;
 
     public Long getIdFormaPagamento() {
         return idFormaPagamento;
@@ -22,21 +16,16 @@ public class FormaPagamento {
         this.idFormaPagamento = idFormaPagamento;
     }
 
-    public Enum getTipoFormaPagamento() {
+    public String getTipoFormaPagamento() {
         return tipoFormaPagamento;
     }
 
-    public void setTipoFormaPagamento(Enum tipoFormaPagamento) {
+    public void setTipoFormaPagamento(String tipoFormaPagamento) {
         this.tipoFormaPagamento = tipoFormaPagamento;
     }
 
     public FormaPagamento(){
 
-    }
-
-    public FormaPagamento(Long idFormaPagamento, Enum tipoFormaPagamento) {
-        this.idFormaPagamento = idFormaPagamento;
-        this.tipoFormaPagamento = tipoFormaPagamento;
     }
 
     @Override
@@ -59,6 +48,16 @@ public class FormaPagamento {
         CREDITO("Crédito"),
         PIX("Pix"),
         DINHEIRO("Dinheiro");
+
+        private final String formapagamento;
+
+        TipoFormaPagamento(String formapagamento) {
+            this.formapagamento = formapagamento;
+        }
+
+        public String getFormapagamento() {
+            return formapagamento;
+        }
         }
 
 }

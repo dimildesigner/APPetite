@@ -1,18 +1,12 @@
 package com.senai.cantina.cantina.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity
 public class Login {
 
-    @Id
-    @GeneratedValue
     private Long idLogin;
     private LocalDateTime ultimoAcesso;
     private LocalDate dataCriacao;
@@ -54,12 +48,6 @@ public class Login {
 
     }
 
-    public Login(Long idLogin, LocalDateTime ultimoAcesso, LocalDate dataCriacao, String senha) {
-        this.idLogin = idLogin;
-        this.ultimoAcesso = ultimoAcesso;
-        this.dataCriacao = dataCriacao;
-        this.senha = senha;
-    }
 
     @Override
     public boolean equals(Object o) {

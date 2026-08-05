@@ -1,15 +1,8 @@
 package com.senai.cantina.cantina.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-
 import java.util.Objects;
 
-@Entity
 public class ItemCompra {
-    @Id
-    @GeneratedValue
     private Long idItemCompra;
     private int quantidadeCompra;
     private double precoUnitario;
@@ -51,12 +44,6 @@ public class ItemCompra {
 
     }
 
-    public ItemCompra(Long idItemCompra, int quantidadeCompra, double precoUnitario, double subtotal) {
-        this.idItemCompra = idItemCompra;
-        this.quantidadeCompra = quantidadeCompra;
-        this.precoUnitario = precoUnitario;
-        this.subtotal = subtotal;
-    }
 
     @Override
     public boolean equals(Object o) {

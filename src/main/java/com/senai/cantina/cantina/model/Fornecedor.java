@@ -1,15 +1,9 @@
 package com.senai.cantina.cantina.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 
 import java.util.Objects;
 
-@Entity
 public class Fornecedor {
-    @Id
-    @GeneratedValue
     private Long idFornecedor;
     private String nomeFornecedor;
     private String cnpj;
@@ -49,13 +43,6 @@ public class Fornecedor {
 
     public Fornecedor() {
 
-    }
-
-    public Fornecedor(Long idFornecedor, String nomeFornecedor, String cnpj, boolean fornecedorAtivo) {
-        this.idFornecedor = idFornecedor;
-        this.nomeFornecedor = nomeFornecedor;
-        this.cnpj = cnpj;
-        FornecedorAtivo = fornecedorAtivo;
     }
 
     @Override

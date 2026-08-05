@@ -1,16 +1,12 @@
 package com.senai.cantina.cantina.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 
 import java.util.Objects;
 
-@Entity
+
 public class Contato {
 
-    @Id
-    @GeneratedValue
+
     private Long idContato;
     private String email;
     private String telefone;
@@ -41,12 +37,6 @@ public class Contato {
 
     public Contato(){
 
-    }
-
-    public Contato(Long idContato, String email, String telefone) {
-        this.idContato = idContato;
-        this.email = email;
-        this.telefone = telefone;
     }
 
     @Override

@@ -1,15 +1,9 @@
 package com.senai.cantina.cantina.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 
 import java.util.Objects;
 
-@Entity
 public class ItemPedido {
-    @Id
-    @GeneratedValue
     private Long idItemPedido;
     private int quantidadePedido;
     private double precoUnitarioPedido;
@@ -49,13 +43,6 @@ public class ItemPedido {
 
     public ItemPedido(){
 
-    }
-
-    public ItemPedido(Long idItemPedido, int quantidadePedido, double precoUnitarioPedido, double subtotalPedido) {
-        this.idItemPedido = idItemPedido;
-        this.quantidadePedido = quantidadePedido;
-        this.precoUnitarioPedido = precoUnitarioPedido;
-        this.subtotalPedido = subtotalPedido;
     }
 
     @Override

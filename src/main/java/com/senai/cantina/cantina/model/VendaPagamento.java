@@ -1,15 +1,9 @@
 package com.senai.cantina.cantina.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 
 import java.util.Objects;
 
-@Entity
 public class VendaPagamento {
-    @Id
-    @GeneratedValue
     private Long idVendaPagamento;
     private double valor;
 
@@ -28,13 +22,9 @@ public class VendaPagamento {
     public void setValor(double valor) {
         this.valor = valor;
     }
+
     public VendaPagamento(){
 
-    }
-
-    public VendaPagamento(Long idVendaPagamento, double valor) {
-        this.idVendaPagamento = idVendaPagamento;
-        this.valor = valor;
     }
 
     @Override

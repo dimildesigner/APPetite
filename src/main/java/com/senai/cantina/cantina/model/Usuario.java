@@ -1,16 +1,9 @@
 package com.senai.cantina.cantina.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-
 import java.util.Objects;
 
-@Entity
 public class Usuario {
 
-    @Id
-    @GeneratedValue
     private Long id;
 
     private String nome;
@@ -42,12 +35,6 @@ public class Usuario {
 
     public Usuario(){
 
-    }
-
-    public Usuario(Long id, String nome, String tipoUsuario) {
-        this.id = id;
-        this.nome = nome;
-        this.tipoUsuario = tipoUsuario;
     }
 
     @Override

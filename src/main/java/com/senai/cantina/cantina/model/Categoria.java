@@ -1,16 +1,10 @@
 package com.senai.cantina.cantina.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 
 import java.util.Objects;
 
-@Entity
 public class Categoria {
 
-    @Id
-    @GeneratedValue
     private Long idCategoria;
     private String nomeCategoria;
 
@@ -34,11 +28,6 @@ public class Categoria {
 
     }
 
-    public Categoria(Long idCategoria, String nomeCategoria) {
-        this.idCategoria = idCategoria;
-        this.nomeCategoria = nomeCategoria;
-    }
-
     @Override
     public boolean equals(Object o) {
         if(this == o)
@@ -52,5 +41,26 @@ public class Categoria {
     @Override
     public int hashCode() {
         return Objects.hash(getClass());
+    }
+
+    public enum CategoriaProduto {
+
+        LANCHE("Lanche"),
+        SALGADO("Salgado"),
+        SNACK("Snack e Porção"),
+        BEBIDA("Bebida"),
+        SOBREMESA("Sobremesa"),
+        ADICIONAL("Adicional"),
+        OUTROS("Outros");
+
+        private final String descricao;
+
+        CategoriaProduto(String descricao) {
+            this.descricao = descricao;
+        }
+
+        public String getDescricao() {
+            return descricao;
+        }
     }
 }

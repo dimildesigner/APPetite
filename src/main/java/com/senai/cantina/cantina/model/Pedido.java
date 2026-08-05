@@ -1,17 +1,10 @@
 package com.senai.cantina.cantina.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-
 import java.time.LocalDate;
 import java.util.Objects;
 
-@Entity
 public class Pedido {
 
-    @Id
-    @GeneratedValue
     private Long idPedido;
     private LocalDate dataPedido;
     private double valorTotal;
@@ -51,13 +44,6 @@ public class Pedido {
 
     public Pedido(){
 
-    }
-
-    public Pedido(Long idPedido, LocalDate dataPedido, double valorTotal, String statusPedido) {
-        this.idPedido = idPedido;
-        this.dataPedido = dataPedido;
-        this.valorTotal = valorTotal;
-        this.statusPedido = statusPedido;
     }
 
     @Override
