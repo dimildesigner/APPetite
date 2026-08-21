@@ -1,55 +1,107 @@
 package com.senai.cantina.cantina.model;
 
-
+import java.math.BigDecimal;
 import java.util.Objects;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
+@Entity
+@Table(name = "itens_pedido")
 public class ItemPedido {
-    private Long idItemPedido;
-    private int quantidadePedido;
-    private double precoUnitarioPedido;
-    private double subtotalPedido;
 
-    public Long getIdItemPedido() {
-        return idItemPedido;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull(message = "Pedido é obrigatório")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pedido_id", nullable = false)
+    private Pedido pedido;
+
+    @NotNull(message = "Produto é obrigatório")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "produto_id", nullable = false)
+    private Produto produto;
+
+    @Positive(message = "Quantidade deve ser maior que zero")
+    @Column(nullable = false)
+    private int quantidade;
+
+    @NotNull(message = "Preço unitário é obrigatório")
+    @DecimalMin(value = "0.01",
+            message = "Preço unitário deve ser maior que zero")
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal precoUnitario;
+
+    public ItemPedido() {
     }
 
-    public void setIdItemPedido(Long idItemPedido) {
-        this.idItemPedido = idItemPedido;
+    @Transient
+    public BigDecimal getSubtotal() {
+        if (precoUnitario == null) {
+            return BigDecimal.ZERO;
+        }
+
+        return precoUnitario.multiply(
+                BigDecimal.valueOf(quantidade)
+        );
     }
 
-    public int getQuantidadePedido() {
-        return quantidadePedido;
+    public Long getId() {
+        return id;
     }
 
-    public void setQuantidadePedido(int quantidadePedido) {
-        this.quantidadePedido = quantidadePedido;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public double getPrecoUnitarioPedido() {
-        return precoUnitarioPedido;
+    public Pedido getPedido() {
+        return pedido;
     }
 
-    public void setPrecoUnitarioPedido(double precoUnitarioPedido) {
-        this.precoUnitarioPedido = precoUnitarioPedido;
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
-    public double getSubtotalPedido() {
-        return subtotalPedido;
+    public Produto getProduto() {
+        return produto;
     }
 
-    public void setSubtotalPedido(double subtotalPedido) {
-        this.subtotalPedido = subtotalPedido;
+    public void setProduto(Produto produto) {
+        this.produto = produto;
     }
 
-    public ItemPedido(){
+    public int getQuantidade() {
+        return quantidade;
+    }
 
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public BigDecimal getPrecoUnitario() {
+        return precoUnitario;
+    }
+
+    public void setPrecoUnitario(BigDecimal precoUnitario) {
+        this.precoUnitario = precoUnitario;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        ItemPedido that = (ItemPedido) o;
-        return quantidadePedido == that.quantidadePedido && Double.compare(precoUnitarioPedido, that.precoUnitarioPedido) == 0 && Double.compare(subtotalPedido, that.subtotalPedido) == 0 && Objects.equals(idItemPedido, that.idItemPedido);
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        ItemPedido itemPedido = (ItemPedido) o;
+        return id != null && id.equals(itemPedido.id);
     }
 
     @Override

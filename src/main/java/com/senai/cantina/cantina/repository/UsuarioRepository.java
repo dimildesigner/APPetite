@@ -1,20 +1,28 @@
 package com.senai.cantina.cantina.repository;
 
 import java.util.List;
+import java.util.Optional;
+
+import com.senai.cantina.cantina.model.Usuario;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.senai.cantina.cantina.model.Usuario;
+public interface UsuarioRepository
+        extends JpaRepository<Usuario, Long> {
 
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+    Optional<Usuario> findByEmail(String email);
 
-    List<Usuario> findByTipoUsuario(String tipoUsuario);
+    boolean existsByEmail(String email);
 
     @Query("""
-            SELECT u FROM Usuario u
-            WHERE LOWER(u.nome) LIKE LOWER(CONCAT('%', :nome, '%'))
+            SELECT u
+            FROM Usuario u
+            WHERE LOWER(u.email) = LOWER(:login)
+            OR LOWER(u.nome) = LOWER(:login)
             """)
-    List<Usuario> buscarPorNome(@Param("nome") String nome);
+    List<Usuario> buscarPorEmailOuNome(
+            @Param("login") String login
+    );
 }

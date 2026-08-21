@@ -1,54 +1,113 @@
 package com.senai.cantina.cantina.model;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
+
+@Entity
+@Table(name = "produtos")
 public class Produto {
-    private Long idProduto;
-    private String nomeProduto;
-    private double precoCusto;
-    private double margemLucro;
-    private double precoVenda;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank(message = "Nome do produto é obrigatório")
+    @Size(min = 2, max = 100,
+            message = "Nome deve conter entre 2 e 100 caracteres")
+    @Column(nullable = false, length = 100)
+    private String nome;
+
+    @Size(max = 500,
+            message = "Descrição deve conter no máximo 500 caracteres")
+    @Column(columnDefinition = "TEXT")
+    private String descricao;
+
+    @NotNull(message = "Categoria é obrigatória")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 30)
+    private CategoriaProduto categoria;
+
+    @NotNull(message = "Preço de custo é obrigatório")
+    @DecimalMin(value = "0.00",
+            message = "Preço de custo não pode ser negativo")
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal precoCusto = BigDecimal.ZERO;
+
+    @NotNull(message = "Preço de venda é obrigatório")
+    @DecimalMin(value = "0.01",
+            message = "Preço de venda deve ser maior que zero")
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal precoVenda;
+
+    @PositiveOrZero(message = "Estoque atual não pode ser negativo")
+    @Column(nullable = false)
     private int estoqueAtual;
+
+    @PositiveOrZero(message = "Estoque mínimo não pode ser negativo")
+    @Column(nullable = false)
     private int estoqueMinimo;
-    private boolean produtoAtivo;
 
-    public Long getIdProduto() {
-        return idProduto;
+    @Column(nullable = false)
+    private boolean perecivel;
+
+    @Column(nullable = false)
+    private boolean ativo = true;
+
+    public Produto() {
     }
 
-    public void setIdProduto(Long idProduto) {
-        this.idProduto = idProduto;
+    public Long getId() {
+        return id;
     }
 
-    public String getNomeProduto() {
-        return nomeProduto;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setNomeProduto(String nomeProduto) {
-        this.nomeProduto = nomeProduto;
+    public String getNome() {
+        return nome;
     }
 
-    public double getPrecoCusto() {
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public CategoriaProduto getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(CategoriaProduto categoria) {
+        this.categoria = categoria;
+    }
+
+    public BigDecimal getPrecoCusto() {
         return precoCusto;
     }
 
-    public void setPrecoCusto(double precoCusto) {
+    public void setPrecoCusto(BigDecimal precoCusto) {
         this.precoCusto = precoCusto;
     }
 
-    public double getMargemLucro() {
-        return margemLucro;
-    }
-
-    public void setMargemLucro(double margemLucro) {
-        this.margemLucro = margemLucro;
-    }
-
-    public double getPrecoVenda() {
+    public BigDecimal getPrecoVenda() {
         return precoVenda;
     }
 
-    public void setPrecoVenda(double precoVenda) {
+    public void setPrecoVenda(BigDecimal precoVenda) {
         this.precoVenda = precoVenda;
     }
 
@@ -68,27 +127,59 @@ public class Produto {
         this.estoqueMinimo = estoqueMinimo;
     }
 
-    public boolean isProdutoAtivo() {
-        return produtoAtivo;
+    public boolean isPerecivel() {
+        return perecivel;
     }
 
-    public void setProdutoAtivo(boolean produtoAtivo) {
-        this.produtoAtivo = produtoAtivo;
+    public void setPerecivel(boolean perecivel) {
+        this.perecivel = perecivel;
     }
 
-    public Produto(){
+    public boolean isAtivo() {
+        return ativo;
+    }
 
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
         Produto produto = (Produto) o;
-        return Double.compare(precoCusto, produto.precoCusto) == 0 && Double.compare(margemLucro, produto.margemLucro) == 0 && Double.compare(precoVenda, produto.precoVenda) == 0 && estoqueAtual == produto.estoqueAtual && estoqueMinimo == produto.estoqueMinimo && produtoAtivo == produto.produtoAtivo && Objects.equals(idProduto, produto.idProduto) && Objects.equals(nomeProduto, produto.nomeProduto);
+        return id != null && id.equals(produto.id);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getClass());
+    }
+
+    public enum CategoriaProduto {
+
+        LANCHE("Lanche"),
+        SALGADO("Salgado"),
+        SNACK("Snack e porção"),
+        BEBIDA("Bebida"),
+        SOBREMESA("Sobremesa"),
+        ADICIONAL("Adicional"),
+        OUTROS("Outros");
+
+        private final String descricao;
+
+        CategoriaProduto(String descricao) {
+            this.descricao = descricao;
+        }
+
+        public String getDescricao() {
+            return descricao;
+        }
     }
 }
