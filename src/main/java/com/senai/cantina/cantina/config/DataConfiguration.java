@@ -12,19 +12,20 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 @Configuration
 public class DataConfiguration {
 
-    private static final String URL =
+    private static final String URL = System.getenv().getOrDefault(
+            "DB_URL",
             "jdbc:mysql://localhost:3306/cantina"
                     + "?createDatabaseIfNotExist=true"
                     + "&useSSL=false"
-                    + "&serverTimezone=America/Sao_Paulo";
+                    + "&serverTimezone=America/Sao_Paulo"
+    );
 
-    private static final String USUARIO = "root";
+    private static final String USUARIO = System.getenv().getOrDefault(
+            "DB_USERNAME",
+            "root"
+    );
 
-    private static final String SENHA =
-            System.getenv().getOrDefault(
-                    "DB_PASSWORD",
-                    "!Venus989160405" //senha do SQL
-            );
+    private static final String SENHA = System.getenv("DB_PASSWORD");
 
     @Bean
     public DataSource dataSource() {

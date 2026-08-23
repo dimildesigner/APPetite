@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="APPetite - cardapio da cantina">
+  <title>APPetite | Cardapio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="module" src="js/app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="APPetite - inicio">
+      <span class="brand-mark" aria-hidden="true">A</span>
+      <span>APPetite</span>
+    </a>
+    <nav class="main-nav" aria-label="Navegacao principal">
+      <a class="nav-link active" href="#cardapio">Cardapio</a>
+      <a class="nav-link" href="#pedidos">Meus pedidos</a>
+      <button class="account-button" type="button" title="Abrir conta">Entrar <span aria-hidden="true">&rarr;</span></button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">Cantina do seu jeito</p>
+        <h1 id="hero-title">Seu intervalo<br><em>com mais sabor.</em></h1>
+        <p class="hero-description">Escolha seus favoritos, monte o pedido e retire quando estiver pronto.</p>
+        <a class="primary-button" href="#cardapio">Ver o cardapio <span aria-hidden="true">&darr;</span></a>
+      </div>
+      <div class="hero-carousel" aria-label="Fotos da cantina">
+        <div class="hero-photo">
+          <img id="hero-carousel-image" src="" alt="">
+        </div>
+        <button id="carousel-previous" class="carousel-control previous" type="button" aria-label="Foto anterior">&larr;</button>
+        <button id="carousel-next" class="carousel-control next" type="button" aria-label="Proxima foto">&rarr;</button>
+        <div id="carousel-indicators" class="carousel-indicators" role="tablist" aria-label="Selecionar foto"></div>
+      </div>
+      <div class="hero-note" aria-label="Informacao de atendimento">
+        <span class="note-dot"></span>
+        <span>Pedidos abertos<br><strong>08:00 - 17:30</strong></span>
+      </div>
+    </section>
+
+    <section id="cardapio" class="menu-section" aria-labelledby="menu-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Feito hoje</p>
+          <h2 id="menu-title">O que vai ser?</h2>
+        </div>
+        <span id="product-count" class="result-count">Carregando...</span>
+      </div>
+      <div class="menu-toolbar">
+        <label class="search-field">
+          <span class="sr-only">Buscar produto</span>
+          <span aria-hidden="true">&#9906;</span>
+          <input id="search-input" type="search" placeholder="Buscar no cardapio..." autocomplete="off">
+        </label>
+        <div id="category-filters" class="category-filters" role="group" aria-label="Filtrar por categoria">
+          <button class="filter-button selected" type="button" data-category="">Todos</button>
+        </div>
+      </div>
+      <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
+      <div id="product-grid" class="product-grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <aside id="cart" class="cart-panel" aria-labelledby="cart-title">
+    <div class="cart-header">
+      <div>
+        <p class="eyebrow">Seu pedido</p>
+        <h2 id="cart-title">Sacola <span id="cart-count">0</span></h2>
+      </div>
+      <button id="clear-cart" class="icon-button" type="button" title="Limpar sacola" aria-label="Limpar sacola">&times;</button>
+    </div>
+    <div id="cart-items" class="cart-items"><p class="empty-cart">Sua sacola esta vazia.</p></div>
+    <div class="cart-total"><span>Total</span><strong id="cart-total-value">R$ 0,00</strong></div>
+    <button id="checkout-button" class="primary-button full-width" type="button" disabled>Continuar pedido <span aria-hidden="true">&rarr;</span></button>
+  </aside>
+
+  <footer class="site-footer"><span>APPetite</span><span>Comida boa para dias corridos.</span></footer>
+  <script type="module" src="js/carousel.js"></script>
+</body>
+</html>

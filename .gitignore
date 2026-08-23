@@ -1,33 +1,49 @@
-HELP.md
+# Build outputs
 target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+build/
+out/
+*.class
 
-### STS ###
-.apt_generated
+# Maven wrapper cache and generated files
+.mvn/wrapper/maven-wrapper.jar
+release.properties
+
+# IDEs and local editor settings
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
 .classpath
-.factorypath
 .project
-.settings
+.settings/
+.factorypath
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+application-local.properties
+application-*.yml
+application-*.yaml
+*.pem
+*.key
+*.p12
+*.jks
 
-### VS Code ###
-.vscode/
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+
+# Frontend dependencies and generated output
+frontend/node_modules/
+frontend/dist/
+frontend/.cache/
