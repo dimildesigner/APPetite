@@ -2,45 +2,44 @@ package com.senai.cantina.cantina.config;
 
 import javax.sql.DataSource;
 
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.context.annotation.Profile;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 @Configuration
+@Profile("!test")
 public class DataConfiguration {
 
-    private static final String URL = System.getenv().getOrDefault(
-            "DB_URL",
+    private static final String URL =
             "jdbc:mysql://localhost:3306/cantina"
                     + "?createDatabaseIfNotExist=true"
                     + "&useSSL=false"
-                    + "&serverTimezone=America/Sao_Paulo"
-    );
+                    + "&serverTimezone=America/Sao_Paulo";
 
-    private static final String USUARIO = System.getenv().getOrDefault(
-            "DB_USERNAME",
-            "root"
-    );
-
-    private static final String SENHA = System.getenv("DB_PASSWORD");
+    private static final String USUARIO = "root";
 
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource =
-                new DriverManagerDataSource();
+        String senha = System.getenv("DB_PASSWORD");
 
-        dataSource.setDriverClassName(
-                "com.mysql.cj.jdbc.Driver"
-        );
+        if (senha == null || senha.isBlank()) {
+            throw new IllegalStateException(
+                    "A variável de ambiente DB_PASSWORD não foi definida. "
+                            + "Configure-a antes de iniciar a aplicação "
+                            + "(nunca deixe a senha real escrita no código-fonte)."
+            );
+        }
 
-        dataSource.setUrl(URL);
-        dataSource.setUsername(USUARIO);
-        dataSource.setPassword(SENHA);
-
-        return dataSource;
+        return DataSourceBuilder.create()
+                .driverClassName("com.mysql.cj.jdbc.Driver")
+                .url(URL)
+                .username(USUARIO)
+                .password(senha)
+                .build();
     }
 
     @Bean

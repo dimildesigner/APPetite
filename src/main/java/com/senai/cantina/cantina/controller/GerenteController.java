@@ -1,8 +1,12 @@
 package com.senai.cantina.cantina.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.senai.cantina.cantina.model.MovimentacaoEstoque.MotivoMovimentacao;
+import com.senai.cantina.cantina.model.Pedido;
+import com.senai.cantina.cantina.model.Pedido.StatusPedido;
+import com.senai.cantina.cantina.model.Pedido.TipoPedido;
 import com.senai.cantina.cantina.model.Produto;
 import com.senai.cantina.cantina.model.Produto.CategoriaProduto;
 import com.senai.cantina.cantina.model.Usuario;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -205,12 +210,140 @@ public class GerenteController {
         }
     }
 
+        @GetMapping("/pedidos")
+        public String listarPedidos(
+                        @RequestParam(required = false) StatusPedido status,
+                        @RequestParam(required = false) TipoPedido tipoPedido,
+                        Model model
+        ) {
+                model.addAttribute("pedidos", pedidoService.filtrar(status, tipoPedido));
+                model.addAttribute("statusList", StatusPedido.values());
+                model.addAttribute("tiposPedido", TipoPedido.values());
+                model.addAttribute("filtroStatus", status);
+                model.addAttribute("filtroTipo", tipoPedido);
+                return "gerente/pedidos/lista";
+        }
+
+        @GetMapping("/pedidos/novo")
+        public String exibirNovoPedido(Model model) {
+                model.addAttribute("usuarios", usuarioService.listarTodos());
+                model.addAttribute("tiposPedido", TipoPedido.values());
+                return "gerente/pedidos/novo";
+        }
+
+        @PostMapping("/pedidos/novo")
+        public String cadastrarPedido(
+                        @RequestParam Long usuarioId,
+                        @RequestParam TipoPedido tipoPedido,
+                        @RequestParam(required = false)
+                        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+                        LocalDateTime horarioRetirada,
+                        @RequestParam(required = false) String observacao,
+                        RedirectAttributes flash
+        ) {
+                try {
+                        Pedido pedido = new Pedido();
+                        pedido.setTipoPedido(tipoPedido);
+                        pedido.setHorarioRetirada(horarioRetirada);
+                        pedido.setObservacao(observacao);
+                        Pedido salvo = pedidoService.criar(usuarioId, pedido);
+                        flash.addFlashAttribute("sucesso", "Pedido criado com sucesso.");
+                        return "redirect:/gerente/pedidos/" + salvo.getId() + "/editar";
+                } catch (Exception exception) {
+                        flash.addFlashAttribute("erro", exception.getMessage());
+                        return "redirect:/gerente/pedidos/novo";
+                }
+        }
+
+        @GetMapping("/pedidos/{id}/editar")
+        public String exibirEdicaoPedido(
+                        @PathVariable Long id,
+                        Model model
+        ) {
+                model.addAttribute("pedido", pedidoService.buscarPorId(id));
+                model.addAttribute("produtos", produtoService.listarAtivos());
+                return "gerente/pedidos/editar";
+        }
+
+        @PostMapping("/pedidos/{id}/itens")
+        public String adicionarItemPedido(
+                        @PathVariable Long id,
+                        @RequestParam Long produtoId,
+                        @RequestParam int quantidade,
+                        RedirectAttributes flash
+        ) {
+                try {
+                        pedidoService.adicionarItem(id, produtoId, quantidade);
+                        flash.addFlashAttribute("sucesso", "Item adicionado ao pedido.");
+                } catch (Exception exception) {
+                        flash.addFlashAttribute("erro", exception.getMessage());
+                }
+                return "redirect:/gerente/pedidos/" + id + "/editar";
+        }
+
+        @PostMapping("/pedidos/{id}/itens/{itemId}/quantidade")
+        public String alterarQuantidadeItem(
+                        @PathVariable Long id,
+                        @PathVariable Long itemId,
+                        @RequestParam int quantidade,
+                        RedirectAttributes flash
+        ) {
+                try {
+                        pedidoService.alterarQuantidade(id, itemId, quantidade);
+                        flash.addFlashAttribute("sucesso", "Quantidade atualizada.");
+                } catch (Exception exception) {
+                        flash.addFlashAttribute("erro", exception.getMessage());
+                }
+                return "redirect:/gerente/pedidos/" + id + "/editar";
+        }
+
+        @PostMapping("/pedidos/{id}/itens/{itemId}/remover")
+        public String removerItemPedido(
+                        @PathVariable Long id,
+                        @PathVariable Long itemId,
+                        RedirectAttributes flash
+        ) {
+                try {
+                        pedidoService.removerItem(id, itemId);
+                        flash.addFlashAttribute("sucesso", "Item removido do pedido.");
+                } catch (Exception exception) {
+                        flash.addFlashAttribute("erro", exception.getMessage());
+                }
+                return "redirect:/gerente/pedidos/" + id + "/editar";
+        }
+
+        @PostMapping("/pedidos/{id}/cancelar")
+        public String cancelarPedido(
+                        @PathVariable Long id,
+                        RedirectAttributes flash
+        ) {
+                try {
+                        pedidoService.cancelarPendente(id);
+                        flash.addFlashAttribute("sucesso", "Pedido cancelado.");
+                } catch (Exception exception) {
+                        flash.addFlashAttribute("erro", exception.getMessage());
+                }
+                return "redirect:/gerente/pedidos";
+        }
+
     @PostMapping("/produtos/{id}/status")
     public String alterarStatusProduto(
             @PathVariable Long id,
-            @RequestParam boolean ativo,
+            // CORRIGIDO: Boolean (wrapper) + required = false em vez de
+            // "boolean ativo" obrigatório, para não estourar
+            // MissingServletRequestParameterException sem tratamento.
+            @RequestParam(required = false) Boolean ativo,
             RedirectAttributes flash
     ) {
+        if (ativo == null) {
+            flash.addFlashAttribute(
+                    "erro",
+                    "Informe o novo status do produto."
+            );
+
+            return "redirect:/gerente/produtos";
+        }
+
         try {
             produtoService.alterarStatus(
                     id,
@@ -382,7 +515,9 @@ public class GerenteController {
             @ModelAttribute("usuario")
             Usuario usuario,
             BindingResult resultado,
-            @RequestParam
+            // CORRIGIDO: required = false em vez de obrigatório, com
+            // validação manual amigável dentro do try/catch abaixo.
+            @RequestParam(required = false)
             TipoUsuario tipoUsuario,
             Model model,
             RedirectAttributes flash
@@ -394,6 +529,12 @@ public class GerenteController {
         }
 
         try {
+            if (tipoUsuario == null) {
+                throw new IllegalArgumentException(
+                        "Selecione o tipo de usuário (Funcionário ou Gerente)."
+                );
+            }
+
             usuarioService
                     .cadastrarFuncionario(
                             usuario,
@@ -422,9 +563,20 @@ public class GerenteController {
     @PostMapping("/usuarios/{id}/status")
     public String alterarStatusUsuario(
             @PathVariable Long id,
-            @RequestParam boolean ativo,
+            // CORRIGIDO: Boolean (wrapper) + required = false em vez de
+            // "boolean ativo" obrigatório.
+            @RequestParam(required = false) Boolean ativo,
             RedirectAttributes flash
     ) {
+        if (ativo == null) {
+            flash.addFlashAttribute(
+                    "erro",
+                    "Informe o novo status do usuário."
+            );
+
+            return "redirect:/gerente/usuarios";
+        }
+
         try {
             usuarioService.alterarStatus(
                     id,
