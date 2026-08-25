@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Acesso ao APPetite">
+  <title>Entrar | APPetite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="auth-page">
+  <main class="auth-card">
+    <a class="brand" href="./" aria-label="Voltar ao inicio"><span class="brand-mark" aria-hidden="true">A</span><span>APPetite</span></a>
+    <p class="eyebrow">Acesso seguro</p>
+    <h1>Entrar na conta</h1>
+    <p class="auth-copy">Use seu e-mail e senha para acessar seus pedidos e a área de gestão.</p>
+    <form id="login-form" class="auth-form" method="post">
+      <label for="username">E-mail<input id="username" name="username" type="email" autocomplete="username" required></label>
+      <label for="password">Senha<input id="password" name="password" type="password" autocomplete="current-password" required></label>
+      <button class="primary-button full-width" type="submit">Entrar <span aria-hidden="true">&rarr;</span></button>
+    </form>
+    <p id="login-feedback" class="feedback" role="status" aria-live="polite"></p>
+    <a class="auth-back" href="./">Voltar ao cardápio</a>
+  </main>
+  <script>
+    const backendUrl = (window.APPETITE_BACKEND_URL || 'http://localhost:8080').replace(/\/$/, '');
+    const form = document.querySelector('#login-form');
+    const feedback = document.querySelector('#login-feedback');
+    form.action = `${backendUrl}/login`;
+    form.addEventListener('submit', () => {
+      feedback.textContent = 'Conectando...';
+    });
+  </script>
+</body>
+</html>
