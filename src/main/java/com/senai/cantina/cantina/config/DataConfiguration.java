@@ -14,16 +14,19 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 @Profile("!test")
 public class DataConfiguration {
 
-    private static final String URL =
-            "jdbc:mysql://localhost:3306/cantina"
-                    + "?createDatabaseIfNotExist=true"
-                    + "&useSSL=false"
-                    + "&serverTimezone=America/Sao_Paulo";
-
-    private static final String USUARIO = "root";
-
     @Bean
     public DataSource dataSource() {
+        String url = System.getenv().getOrDefault(
+                "DB_URL",
+                "jdbc:mysql://localhost:3306/cantina"
+                        + "?createDatabaseIfNotExist=true"
+                        + "&useSSL=false"
+                        + "&serverTimezone=America/Sao_Paulo"
+        );
+        String usuario = System.getenv().getOrDefault(
+                "DB_USERNAME",
+                "root"
+        );
         String senha = System.getenv("DB_PASSWORD");
 
         if (senha == null || senha.isBlank()) {
@@ -36,8 +39,8 @@ public class DataConfiguration {
 
         return DataSourceBuilder.create()
                 .driverClassName("com.mysql.cj.jdbc.Driver")
-                .url(URL)
-                .username(USUARIO)
+                .url(url)
+                .username(usuario)
                 .password(senha)
                 .build();
     }

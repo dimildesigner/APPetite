@@ -1,4 +1,5 @@
-const API_BASE_URL = window.APPETITE_API_URL || 'http://localhost:8080/api';
+const configuredApiUrl = window.APPETITE_API_URL || '/api';
+const API_BASE_URL = configuredApiUrl.replace(/\/$/, '');
 
 export class ApiError extends Error {
   constructor(message, status = 0) {
